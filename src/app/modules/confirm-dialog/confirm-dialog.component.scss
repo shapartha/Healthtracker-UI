@@ -1,0 +1,18 @@
+.dialog-container {
+    margin: 20px;
+}
+
+.dialog-content {
+    margin: 2px;
+}
+
+.row.d-flex {
+    font-weight: bold;
+}
+
+.dialog-footer-btns {
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+    margin-top: 1.5rem;
+}

@@ -156,6 +156,8 @@ html {
     --mat-table-header-container-height: 36px;
     --mat-paginator-container-background-color: white;
     --mat-paginator-container-text-color: black;
+    --mdc-dialog-container-color: white;
+    --mdc-dialog-container-shape: 0px;
 }
 
 .mat-mdc-table {
@@ -203,5 +205,14 @@ div.mat-mdc-select-panel {
 */
 .mat-error.mat-mdc-button-base {
     --mdc-protected-button-container-color: red;
+    --mdc-protected-button-label-text-color: white;
+}
+
+
+/*
+*  Theme changes for Warn - Button types
+*/
+.mat-warn.mat-mdc-button-base {
+    --mdc-protected-button-container-color: rgba(92, 108, 251, 0.919);
     --mdc-protected-button-label-text-color: white;
 }

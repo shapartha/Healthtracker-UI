@@ -4,3 +4,10 @@ export interface ApiResponseModel<T> {
     responseDescription: string,
     dataArray: T[]
 }
+
+export interface DialogData {
+    title: string,
+    message: string,
+    confirmBtnLabel: string,
+    closeBtnLabel: string
+}

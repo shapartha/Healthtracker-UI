@@ -21,6 +21,10 @@ export class BloodSugarService {
       return this.commonService.callRestApi(AppConstants.API_DELETE_BS_DATA, apiFuncParams);
   }
 
+  updateBsRecord(apiFuncParams: any) {
+    return this.commonService.callRestApi(AppConstants.API_UPDATE_BS_DATA, apiFuncParams);
+  }
+
   /**
    * Returns -1 if GOOD, 0 if HIGH, 1 if LOW
    * 

@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, viewChild, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +9,8 @@ import { BloodSugarListRequestModel, BloodSugarListResponseModel } from 'src/app
 import { ApiResponseModel } from 'src/app/models/common.model';
 import { BloodSugarService } from 'src/app/services/blood-sugar/blood-sugar.service';
 import { CommonService } from 'src/app/services/common/common.service';
+import { UpdateBloodSugarComponent } from './update-blood-sugar/update-blood-sugar.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-blood-sugar',
@@ -27,9 +30,9 @@ export class BloodSugarComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private formBuilder: FormBuilder, private bloodSugarService: BloodSugarService, private commonService: CommonService) {
+  constructor(private formBuilder: FormBuilder, private bloodSugarService: BloodSugarService, private commonService: CommonService, private dialog: MatDialog) {
     this.addNewForm = this.formBuilder.group({
-      fbs: [0, Validators.min(1)],
+      fbs: [0],
       record_date_fst: [new Date(), Validators.required],
       postprandial: [0],
       record_date_pp: [new Date()]
@@ -47,6 +50,15 @@ export class BloodSugarComponent implements OnInit {
         this.addNewForm.controls['record_date_pp'].updateValueAndValidity();
       }
     });
+    this.addNewForm.controls['fbs'].valueChanges.subscribe(value => {
+      if (value > 0) {
+        this.addNewForm.controls['record_date_fst'].addValidators([Validators.required]);
+        this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
+      } else {
+        this.addNewForm.controls['record_date_fst'].removeValidators([Validators.required]);
+        this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
+      }
+    });
 
     this.loadData();
   }
@@ -55,8 +67,8 @@ export class BloodSugarComponent implements OnInit {
     let inputParams: BloodSugarListRequestModel = { user_id: this.commonService.getAppUserId! };
     this.bloodSugarService.getBsRecords(inputParams).subscribe((data: ApiResponseModel<BloodSugarListResponseModel>) => {
       data.dataArray.forEach(element => {
-        element.record_date_fst = (element.fbs == '0') ? '' : this.commonService.formatDateToString(element.record_date_fst);
-        element.record_date_pp = (element.postprandial == '0') ? '' : this.commonService.formatDateToString(element.record_date_pp);
+        element.record_date_fst_d = (element.fbs == '0') ? '' : this.commonService.formatDateToString(element.record_date_fst);
+        element.record_date_pp_d = (element.postprandial == '0') ? '' : this.commonService.formatDateToString(element.record_date_pp);
       });
       this.tableData.data = data.dataArray;
       this.isLoadingResults = false;
@@ -97,15 +109,43 @@ export class BloodSugarComponent implements OnInit {
   }
 
   deleteData(row: BloodSugarListResponseModel) {
-    this.isLoadingResults = true;
-    this.bloodSugarService.deleteBsRecord(row).subscribe((data: ApiResponseModel<any>) => {
-      if (data.success === true) {
-        this.commonService.showAlert("Record Deleted Successfully");
-        this.loadData();
-      } else {
-        this.commonService.showAlert(data.responseDescription);
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirm Delete Action',
+        message: 'Record would get deleted permanently. Are you sure you want to delete this record ?',
+        confirmBtnLabel: 'Yes',
+        closeBtnLabel: 'No'
+      },
+      disableClose: true
+    });
+    confirmDialog.afterClosed().subscribe(data => {
+      if (data) {
+        this.isLoadingResults = true;
+        this.bloodSugarService.deleteBsRecord(row).subscribe((data: ApiResponseModel<any>) => {
+          if (data.success === true) {
+            this.commonService.showAlert("Record Deleted Successfully");
+            this.loadData();
+          } else {
+            this.commonService.showAlert(data.responseDescription);
+          }
+          this.isLoadingResults = false;
+        });
       }
-      this.isLoadingResults = false;
+    });
+  }
+
+  addFbsOrPP(row: BloodSugarListResponseModel, editMode: number = 1) {
+    const dialogRef = this.dialog.open(UpdateBloodSugarComponent, {
+      data: { record: row, mode: editMode },
+      width: '50vw',
+      disableClose: true,
+      closeOnNavigation: true
+    });
+    dialogRef.afterClosed().subscribe(d => {
+      if (!!d && d.simplyClose) {
+        return;
+      }
+      this.loadData();
     });
   }
 

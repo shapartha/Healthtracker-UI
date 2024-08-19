@@ -40,10 +40,12 @@ import { AuthGuard } from './auth.guard';
 import { HomeComponent } from './modules/home/home.component';
 import { BloodSugarComponent } from './modules/blood-sugar/blood-sugar.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
+import { UpdateBloodSugarComponent } from './modules/blood-sugar/update-blood-sugar/update-blood-sugar.component';
+import { ConfirmDialogComponent } from './modules/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent
+    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent, UpdateBloodSugarComponent, ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

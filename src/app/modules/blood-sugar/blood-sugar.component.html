@@ -63,24 +63,38 @@
                 </ng-container>
                 <ng-container matColumnDef="fbs">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Fasting Sugar</th>
-                    <td mat-cell *matCellDef="let row">{{row.fbs}}</td>
+                    <td mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.fbs !== '0'">
+                            {{row.fbs}}
+                        </ng-container>
+                        <ng-container *ngIf="row.fbs === '0'">
+                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)">Add FBS</button>
+                        </ng-container>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="record_date_fst">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
-                    <td mat-cell *matCellDef="let row">{{row.record_date_fst}}</td>
+                    <td mat-cell *matCellDef="let row">{{row.record_date_fst_d}}</td>
                 </ng-container>
                 <ng-container matColumnDef="postprandial">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>PP Sugar</th>
-                    <td mat-cell *matCellDef="let row">{{row.postprandial}}</td>
+                    <td mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.postprandial !== '0'">
+                            {{row.postprandial}}
+                        </ng-container>
+                        <ng-container *ngIf="row.postprandial === '0'">
+                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)">Add PP</button>
+                        </ng-container>
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="record_date_pp">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
-                    <td mat-cell *matCellDef="let row">{{row.record_date_pp}}</td>
+                    <td mat-cell *matCellDef="let row">{{row.record_date_pp_d}}</td>
                 </ng-container>
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let row">
-                        <mat-icon class="link">edit</mat-icon>
+                        <mat-icon class="link" (click)="addFbsOrPP(row, 0)">edit</mat-icon>
                         <mat-icon class="link" (click)="deleteData(row)">delete</mat-icon>
                     </td>
                 </ng-container>

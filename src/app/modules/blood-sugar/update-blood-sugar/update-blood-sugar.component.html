@@ -1,0 +1,44 @@
+<div id="updateForm" class="center-align-val">
+    <form class="form-update-record" [formGroup]="updateForm">
+        <mat-form-field appearance="outline" class="margin-right-10" *ngIf="showAll || showOnlyFBS">
+            <mat-label>Fasting: </mat-label>
+            <input type="number" min="0" max="999" matInput placeholder="Fasting" formControlName="fbs">
+            <mat-error *ngIf="updateForm.controls.fbs.hasError('min')">
+                Value must be greater than 0
+            </mat-error>
+            <mat-error *ngIf="updateForm.controls.fbs.hasError('required')">
+                This is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10" *ngIf="(showAll || showOnlyFBS) && updateForm.value.fbs !== 0">
+            <mat-label>Fasting Date&Time: </mat-label>
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_fst">
+            <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+            <mat-error *ngIf="updateForm.controls.record_date_fst.hasError('required') || updateForm.controls.record_date_fst.hasError('owlDateTimeParse')">
+                Valid Date value required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10" *ngIf="showAll || showOnlyPP">
+            <mat-label>Postprandial (PP):</mat-label>
+            <input type="number" min="0" max="999" matInput placeholder="Postprandial (PP)" formControlName="postprandial">
+            <mat-error *ngIf="updateForm.controls.postprandial.hasError('min')">
+                Value must be greater than 0
+            </mat-error>
+            <mat-error *ngIf="updateForm.controls.postprandial.hasError('required')">
+                This is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10" *ngIf="(showAll || showOnlyPP) && updateForm.value.postprandial !== 0">
+            <mat-label>PP Date&Time: </mat-label>
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_pp">
+            <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+            <mat-error *ngIf="updateForm.controls.record_date_pp.hasError('required') || updateForm.controls.record_date_pp.hasError('owlDateTimeParse')">
+                Valid Date value required
+            </mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="primary" [disabled]="!updateForm.valid || disableButton" (click)="submitData()">Save</button>
+            <button mat-raised-button color="error" (click)="close()">Close</button>
+        </div>
+    </form>
+</div>
