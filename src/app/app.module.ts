@@ -42,46 +42,16 @@ import { BloodSugarComponent } from './modules/blood-sugar/blood-sugar.component
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { UpdateBloodSugarComponent } from './modules/blood-sugar/update-blood-sugar/update-blood-sugar.component';
 import { ConfirmDialogComponent } from './modules/confirm-dialog/confirm-dialog.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { LogoutComponent } from './modules/logout/logout.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent, UpdateBloodSugarComponent, ConfirmDialogComponent
+    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent, UpdateBloodSugarComponent, ConfirmDialogComponent, LogoutComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatChipsModule,
-    MatCommonModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatProgressBarModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTooltipModule,
-    MatToolbarModule,
-    NgIdleModule.forRoot()
+    BrowserModule, AppRoutingModule, ReactiveFormsModule, OwlDateTimeModule, OwlNativeDateTimeModule, MatFormFieldModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatButtonModule, MatButtonToggleModule, MatChipsModule, MatCommonModule, MatDatepickerModule, MatDialogModule,
+    MatDividerModule, MatExpansionModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatPaginatorModule, MatProgressSpinnerModule, MatProgressBarModule, MatRadioModule, MatSelectModule, MatSlideToggleModule, MatSnackBarModule, MatSortModule, MatTableModule, MatTooltipModule, MatToolbarModule, NgIdleModule.forRoot(), MatSidenavModule
   ],
   providers: [
     provideAnimationsAsync(), provideHttpClient(withInterceptorsFromDi()),

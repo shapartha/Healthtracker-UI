@@ -7,10 +7,19 @@
     ;
 }
 
-.mat-toolbar>span {
+.mat-toolbar ::ng-deep span {
     font-size: 14px;
 }
 
 span:not(.spacer) {
     cursor: pointer;
+}
+
+.mat-drawer {
+    width: 160px !important;
+    max-height: fit-content;
+}
+
+.mat-drawer-container {
+    overflow: visible !important;
 }

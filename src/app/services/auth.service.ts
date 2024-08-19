@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Idle } from '@ng-idle/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,10 +12,7 @@ import { LoginRequestModel } from '../models/login.model';
 })
 export class AuthService {
 
-  private isLoggedinSubject = new BehaviorSubject<boolean>(false);
-  loginEvent = this.isLoggedinSubject.asObservable();
-
-  logoutUrl = `${environment.apiServerUrl}/appLogout`;
+  logoutUrl = `${environment.apiServerUrl}/logout`;
   idleTimeoutWarningSeconds = 10;
 
   constructor(private idle: Idle, private dialog: MatDialog, private commonService: CommonService) { }
@@ -29,12 +25,13 @@ export class AuthService {
       return this.login(userDetails);
     }
   }
+
   logout() {
-    throw new Error('Method not implemented.');
+    this.commonService.clearSession();
   }
 
   public login(userDetails: LoginRequestModel) {
     userDetails.password = btoa(userDetails.password);
-    return this.commonService.callRestApi(AppConstants.API_LOGIN_USER, userDetails)
+    return this.commonService.callRestApi(AppConstants.API_LOGIN_USER, userDetails);
   }
 }

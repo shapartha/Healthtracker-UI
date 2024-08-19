@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { AppConstants } from 'src/app/app.constant';
@@ -14,6 +14,8 @@ export class CommonService {
 
   appToken: string = "";
   appUserId: string = "";
+  screenHeight = signal(200);
+  screenWidth = signal(400);
 
   constructor(private httpClient: HttpClient, private snackbar: MatSnackBar) { }
 
@@ -47,30 +49,34 @@ export class CommonService {
   public get getAppToken() {
     return sessionStorage.getItem('app-token-ht');
   }
-  
-  public set setAppToken(appToken : string) {
-      sessionStorage.setItem("app-token-ht", appToken);
+
+  public set setAppToken(appToken: string) {
+    sessionStorage.setItem("app-token-ht", appToken);
   }
 
   public get getAppUserId() {
-      return sessionStorage.getItem('app-user-id-ht');
+    return sessionStorage.getItem('app-user-id-ht');
   }
-  
-  public set setAppUserId(v : string) {
+
+  public set setAppUserId(v: string) {
     sessionStorage.setItem("app-user-id-ht", v);
   }
 
+  clearSession() {
+    sessionStorage.clear();
+  }
+
   showAlert(msg: string | object, actionTxt?: string) {
-      if (actionTxt == undefined || actionTxt == null) {
-          actionTxt = "Close";
-      }
-      if (typeof msg !== 'string') {
-          msg = "An error occurred -> " + JSON.stringify(msg);
-      }
-      this.snackbar.open(msg, actionTxt);
-      setTimeout(() => {
-          this.snackbar.dismiss();
-      }, 5000);
+    if (actionTxt == undefined || actionTxt == null) {
+      actionTxt = "Close";
+    }
+    if (typeof msg !== 'string') {
+      msg = "An error occurred -> " + JSON.stringify(msg);
+    }
+    this.snackbar.open(msg, actionTxt);
+    setTimeout(() => {
+      this.snackbar.dismiss();
+    }, 5000);
   }
 
   formatDateToString(d: string) {
@@ -84,11 +90,11 @@ export class CommonService {
   }
 
   convertDateForSQL(_date?: any) {
-      var d = new Date();
-      if (_date !== undefined && _date !== null) {
-          d = new Date(_date);
-      }
-      return [d.getFullYear(), this.padZeros(d.getMonth()+1), this.padZeros(d.getDate())].join('-') + ' ' + 
+    var d = new Date();
+    if (_date !== undefined && _date !== null) {
+      d = new Date(_date);
+    }
+    return [d.getFullYear(), this.padZeros(d.getMonth() + 1), this.padZeros(d.getDate())].join('-') + ' ' +
       [this.padZeros(d.getHours()), this.padZeros(d.getMinutes()), this.padZeros(d.getSeconds())].join(':')
   }
 

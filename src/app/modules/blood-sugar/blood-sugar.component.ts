@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, viewChild, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, signal, viewChild, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -29,6 +29,7 @@ export class BloodSugarComponent implements OnInit {
   isLoadingResults = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  notSupported: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private bloodSugarService: BloodSugarService, private commonService: CommonService, private dialog: MatDialog) {
     this.addNewForm = this.formBuilder.group({
@@ -37,30 +38,42 @@ export class BloodSugarComponent implements OnInit {
       postprandial: [0],
       record_date_pp: [new Date()]
     });
+    this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?: any) {
+    this.commonService.screenHeight.set(window.innerHeight);
+    this.commonService.screenWidth.set(window.innerWidth);
+    if (this.commonService.screenWidth() <= 430) {
+      this.notSupported = true;
+    }
   }
 
   ngOnInit(): void {
-    this.isLoadingResults = true;
-    this.addNewForm.controls['postprandial'].valueChanges.subscribe(value => {
-      if (value > 0) {
-        this.addNewForm.controls['record_date_pp'].addValidators([Validators.required]);
-        this.addNewForm.controls['record_date_pp'].updateValueAndValidity();
-      } else {
-        this.addNewForm.controls['record_date_pp'].removeValidators([Validators.required]);
-        this.addNewForm.controls['record_date_pp'].updateValueAndValidity();
-      }
-    });
-    this.addNewForm.controls['fbs'].valueChanges.subscribe(value => {
-      if (value > 0) {
-        this.addNewForm.controls['record_date_fst'].addValidators([Validators.required]);
-        this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
-      } else {
-        this.addNewForm.controls['record_date_fst'].removeValidators([Validators.required]);
-        this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
-      }
-    });
+    if (!this.notSupported) {
+      this.isLoadingResults = true;
+      this.addNewForm.controls['postprandial'].valueChanges.subscribe(value => {
+        if (value > 0) {
+          this.addNewForm.controls['record_date_pp'].addValidators([Validators.required]);
+          this.addNewForm.controls['record_date_pp'].updateValueAndValidity();
+        } else {
+          this.addNewForm.controls['record_date_pp'].removeValidators([Validators.required]);
+          this.addNewForm.controls['record_date_pp'].updateValueAndValidity();
+        }
+      });
+      this.addNewForm.controls['fbs'].valueChanges.subscribe(value => {
+        if (value > 0) {
+          this.addNewForm.controls['record_date_fst'].addValidators([Validators.required]);
+          this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
+        } else {
+          this.addNewForm.controls['record_date_fst'].removeValidators([Validators.required]);
+          this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
+        }
+      });
 
-    this.loadData();
+      this.loadData();
+    }
   }
 
   loadData() {

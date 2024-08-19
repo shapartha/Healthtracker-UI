@@ -10,10 +10,37 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mobile-view {
+    display: none !important;
+}
+
+.no-mobile-view.mat-toolbar-single-row {
+    display: flex !important;
+}
+
+.no-mobile-view:not(.mat-toolbar-single-row) {
+    display: block !important;
+}
+
+@media (max-width: 600px) {
+    .mobile-view {
+        display: block !important;
+    }
+
+    span:not(.spacer) {
+        font-size: smaller;
+    }
+
+    .no-mobile-view, .no-mobile-view.mat-toolbar-single-row {
+        display: none !important;
+    }
+}
+
 @media (max-width: 430px) {
     .container {
         display: none !important;
     }
+
     .screen-unsupported {
         display: block !important;
     }
@@ -60,36 +87,47 @@ button {
 .bold-val {
     font-weight: bold;
 }
+
 .purple-val {
     color: purple;
 }
+
 .darkgreen-val {
     color: darkgreen;
 }
+
 .orange-val {
     color: orange;
 }
+
 .red-val {
     color: red;
 }
+
 .right-align-val {
     text-align: right;
 }
+
 .center-align-val {
     text-align: center;
 }
+
 .font12-val {
     font-size: 12px;
 }
+
 .margin-right-10 {
     margin-right: 10px;
 }
+
 .margin-auto {
     margin: auto;
 }
+
 .w-33 {
     width: 33% !important;
 }
+
 #loader-container {
     position: absolute;
     width: 100%;
@@ -98,18 +136,25 @@ button {
     background: white;
     opacity: 0.8;
 }
-.h5, h5 {
+
+.h5,
+h5 {
     font-size: 1.25rem !important;
 }
-.h6, h6 {
+
+.h6,
+h6 {
     font-size: 1rem !important;
 }
+
 .xx-large-font {
     font-size: xx-large;
 }
+
 .x-large-font {
     font-size: x-large;
 }
+
 .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
@@ -158,6 +203,7 @@ html {
     --mat-paginator-container-text-color: black;
     --mdc-dialog-container-color: white;
     --mdc-dialog-container-shape: 0px;
+    --mat-sidenav-container-shape: 0px;
 }
 
 .mat-mdc-table {
@@ -169,7 +215,10 @@ div.mat-mdc-select-panel {
     background-color: white !important;
 }
 
-.mat-mdc-row, .mat-mdc-header-row, .mat-mdc-select, .mat-mdc-option {
+.mat-mdc-row,
+.mat-mdc-header-row,
+.mat-mdc-select,
+.mat-mdc-option {
     color: black !important;
 }
 

@@ -1,8 +1,8 @@
-<mat-toolbar>
+<mat-toolbar class="no-mobile-view">
     <button mat-icon-button routerLink="home">
         <mat-icon>home</mat-icon>
     </button>
-    <span routerLink="home">Health Tracker</span>
+    <span routerLink="home">Home</span>
     <span class="spacer"></span>
     <button mat-icon-button>
         <mat-icon>important_devices</mat-icon>
@@ -14,7 +14,43 @@
     </button>
     <span routerLink="blood-sugar">Blood Sugar</span>
     <span class="spacer"></span>
+    <button mat-icon-button routerLink="logout">
+        <mat-icon>logout</mat-icon>
+    </button>
+    <span routerLink="logout">Logout</span>
 </mat-toolbar>
+
+<mat-sidenav-container class="mobile-view" [hasBackdrop]="false">
+    <mat-sidenav #sidenav mode="push" disableClose>
+        <div (click)="sidenav.close()">
+            <button mat-icon-button routerLink="home">
+                <mat-icon>home</mat-icon>
+            </button>
+            <span routerLink="home">Home</span>
+            <br>
+            <button mat-icon-button>
+                <mat-icon>important_devices</mat-icon>
+            </button>
+            <span>Blood Pressure</span>
+            <br>
+            <button mat-icon-button routerLink="blood-sugar">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <span routerLink="blood-sugar">Blood Sugar</span>
+            <span class="spacer"></span>
+            <button mat-icon-button routerLink="logout">
+                <mat-icon>logout</mat-icon>
+            </button>
+            <span routerLink="logout">Logout</span>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span routerLink="home">Health Tracker</span>
+    </mat-sidenav-content>
+</mat-sidenav-container>
 
 <router-outlet></router-outlet>
 <div class="screen-unsupported">
