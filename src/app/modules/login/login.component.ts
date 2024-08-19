@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
         this.alertText = "Login Successful ! Redirecting...";
         setTimeout(() => {
           this.router.navigateByUrl('/home');
+          window.location.reload();
         }, 1000);
       } else {
         this.alertClass = "alert-danger";

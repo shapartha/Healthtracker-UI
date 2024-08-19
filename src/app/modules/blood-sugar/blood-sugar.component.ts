@@ -45,7 +45,7 @@ export class BloodSugarComponent implements OnInit {
   getScreenSize(event?: any) {
     this.commonService.screenHeight.set(window.innerHeight);
     this.commonService.screenWidth.set(window.innerWidth);
-    if (this.commonService.screenWidth() <= 430) {
+    if (this.commonService.screenWidth() <= 380) {
       this.notSupported = true;
     }
   }

@@ -34,9 +34,14 @@ body {
     .no-mobile-view, .no-mobile-view.mat-toolbar-single-row {
         display: none !important;
     }
+
+    .mat-mdc-row,
+    .mat-mdc-header-row {
+        display: inline-table !important;
+    }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 380px) {
     .container {
         display: none !important;
     }

@@ -1,4 +1,4 @@
-<mat-toolbar class="no-mobile-view">
+<mat-toolbar class="no-mobile-view" *ngIf="isLoggedIn">
     <button mat-icon-button routerLink="home">
         <mat-icon>home</mat-icon>
     </button>
@@ -20,7 +20,7 @@
     <span routerLink="logout">Logout</span>
 </mat-toolbar>
 
-<mat-sidenav-container class="mobile-view" [hasBackdrop]="false">
+<mat-sidenav-container class="mobile-view" [hasBackdrop]="false" *ngIf="isLoggedIn">
     <mat-sidenav #sidenav mode="push" disableClose>
         <div (click)="sidenav.close()">
             <button mat-icon-button routerLink="home">
