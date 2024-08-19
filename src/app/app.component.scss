@@ -1,0 +1,16 @@
+.spacer {
+    width: 25px;
+}
+
+.mat-toolbar {
+    height: 40px;
+    ;
+}
+
+.mat-toolbar>span {
+    font-size: 14px;
+}
+
+span:not(.spacer) {
+    cursor: pointer;
+}

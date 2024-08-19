@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="login">
+        <div class="alert font12-val" [ngClass]="alertClass" (click)="dismissAlert()">{{alertText}}</div>
+        <h6>Sign In</h6>
+        <form [formGroup]="loginForm">
+            <div class="row">
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Email</mat-label>
+                    <input matInput type="text" class="form-control" formControlName="userName" id="email"
+                        placeholder="Ex. youremail@mail.com">
+                </mat-form-field>
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" class="form-control" formControlName="passWord" id="password"
+                        placeholder="Ex. A123@paswod">
+                </mat-form-field>
+            </div>
+            <div class="row center">
+                <button color="primary" id="register" mat-raised-button (click)="submitForm()">Sign In</button>
+                <button color="accent" id="reset" mat-raised-button (click)="resetForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>

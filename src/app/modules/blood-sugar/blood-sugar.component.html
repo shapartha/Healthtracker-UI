@@ -1,0 +1,97 @@
+@if (isLoadingResults) {
+<div class="loading-shade">
+    @if (isLoadingResults) {
+    <mat-spinner></mat-spinner>
+    }
+</div>
+}
+<div class="container">
+    <div id="addNewForm" class="center-align-val">
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+                    <mat-panel-description>
+                        Add New Blood Sugar Record
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <form class="form-add-record" [formGroup]="addNewForm" (submit)="submitData()">
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Fasting: </mat-label>
+                        <input type="number" min="0" max="999" matInput placeholder="Fasting" formControlName="fbs">
+                        <mat-error *ngIf="addNewForm.controls.fbs.hasError('min')">
+                            Value must be greater than 0
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.fbs !== 0">
+                        <mat-label>Fasting Date&Time: </mat-label>
+                        <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_fst">
+                        <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+                        <mat-error *ngIf="addNewForm.controls.record_date_fst.hasError('required')">
+                            Valid Date value required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Postprandial (PP):</mat-label>
+                        <input type="number" min="0" max="999" matInput placeholder="Postprandial (PP)" formControlName="postprandial">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.postprandial !== 0">
+                        <mat-label>PP Date&Time: </mat-label>
+                        <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_pp">
+                        <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+                        <mat-error *ngIf="addNewForm.controls.record_date_pp.hasError('required')">
+                            Valid Date value required
+                        </mat-error>
+                    </mat-form-field>
+                    <div>
+                        <button mat-raised-button color="primary" [disabled]="!addNewForm.valid">Save</button>
+                        <button mat-raised-button color="accent" (click)="addNewForm.reset()">Reset</button>
+                        <button mat-raised-button color="error" (click)="accordion().closeAll()">Close</button>
+                    </div>
+                </form>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div class="table-container mat-elevation-z8">
+        <div class="main-table-container">
+
+            <table mat-table [dataSource]="tableData" class="main-table" matSort matSortActive="record_date_fst" matSortDisableClear matSortDirection="desc">
+                <ng-container matColumnDef="statusIndicator">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-icon class="custom" [ngClass]="getClassVal(row).colorClass">{{getClassVal(row).icon}}</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="fbs">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fasting Sugar</th>
+                    <td mat-cell *matCellDef="let row">{{row.fbs}}</td>
+                </ng-container>
+                <ng-container matColumnDef="record_date_fst">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
+                    <td mat-cell *matCellDef="let row">{{row.record_date_fst}}</td>
+                </ng-container>
+                <ng-container matColumnDef="postprandial">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PP Sugar</th>
+                    <td mat-cell *matCellDef="let row">{{row.postprandial}}</td>
+                </ng-container>
+                <ng-container matColumnDef="record_date_pp">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
+                    <td mat-cell *matCellDef="let row">{{row.record_date_pp}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-icon class="link">edit</mat-icon>
+                        <mat-icon class="link" (click)="deleteData(row)">delete</mat-icon>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+        <mat-paginator [length]="resultsLength" [pageSize]="20" [pageSizeOptions]="[20, 30, 50]" [showFirstLastButtons]="true"
+            aria-label="Select page of GitHub search results"></mat-paginator>
+    </div>
+
+</div>
