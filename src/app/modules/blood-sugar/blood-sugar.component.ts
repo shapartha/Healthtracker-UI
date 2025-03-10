@@ -11,6 +11,7 @@ import { BloodSugarService } from 'src/app/services/blood-sugar/blood-sugar.serv
 import { CommonService } from 'src/app/services/common/common.service';
 import { UpdateBloodSugarComponent } from './update-blood-sugar/update-blood-sugar.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AppConstants } from 'src/app/app.constant';
 
 @Component({
   selector: 'app-blood-sugar',
@@ -80,8 +81,8 @@ export class BloodSugarComponent implements OnInit {
     let inputParams: BloodSugarListRequestModel = { user_id: this.commonService.getAppUserId! };
     this.bloodSugarService.getBsRecords(inputParams).subscribe((data: ApiResponseModel<BloodSugarListResponseModel>) => {
       data.dataArray.forEach(element => {
-        element.record_date_fst_d = (element.fbs == '0') ? '' : this.commonService.formatDateToString(element.record_date_fst);
-        element.record_date_pp_d = (element.postprandial == '0') ? '' : this.commonService.formatDateToString(element.record_date_pp);
+        element.record_date_fst_d = (element.fbs == '0') ? '' : this.commonService.formatDateToString(element.record_date_fst, AppConstants.CORRECT_TIMEZONE);
+        element.record_date_pp_d = (element.postprandial == '0') ? '' : this.commonService.formatDateToString(element.record_date_pp, AppConstants.CORRECT_TIMEZONE);
       });
       this.tableData.data = data.dataArray;
       this.isLoadingResults = false;
@@ -101,8 +102,8 @@ export class BloodSugarComponent implements OnInit {
     let inpData = {
       fbs: (formData.fbs === undefined || formData.fbs === null) ? 0 : formData.fbs,
       postprandial: (formData.postprandial === undefined || formData.postprandial === null) ? 0 : formData.postprandial,
-      record_date_fst: (formData.fbs === undefined || formData.fbs === null) ? this.commonService.convertDateForSQL() : formData.record_date_fst,
-      record_date_pp: (formData.postprandial === undefined || formData.postprandial === null) ? this.commonService.convertDateForSQL() : formData.record_date_pp,
+      record_date_fst: (formData.fbs === undefined || formData.fbs === null) ? this.commonService.convertDateForSQL(new Date().toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })) : this.commonService.convertDateForSQL(new Date(formData.record_date_fst).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })),
+      record_date_pp: (formData.postprandial === undefined || formData.postprandial === null) ? this.commonService.convertDateForSQL(new Date().toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })) : this.commonService.convertDateForSQL(new Date(formData.record_date_pp).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })),
       check_sum: this.commonService.generateUUID(),
       user_id: this.commonService.getAppUserId
     }
@@ -110,7 +111,7 @@ export class BloodSugarComponent implements OnInit {
     this.bloodSugarService.saveBsRecord(inpData).subscribe((data: ApiResponseModel<any>) => {
       if (data.success === true) {
         this.accordion().closeAll();
-        this.commonService.showAlert("Record Added Successfully");
+        this.commonService.showAlert("Record Added Successfully", "success");
         this.addNewForm.reset({
           fbs: 0,
           postprandial: 0
@@ -136,7 +137,7 @@ export class BloodSugarComponent implements OnInit {
         this.isLoadingResults = true;
         this.bloodSugarService.deleteBsRecord(row).subscribe((data: ApiResponseModel<any>) => {
           if (data.success === true) {
-            this.commonService.showAlert("Record Deleted Successfully");
+            this.commonService.showAlert("Record Deleted Successfully", "success");
             this.loadData();
           } else {
             this.commonService.showAlert(data.responseDescription);

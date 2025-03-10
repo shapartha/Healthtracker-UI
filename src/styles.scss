@@ -31,7 +31,8 @@ body {
         font-size: smaller;
     }
 
-    .no-mobile-view, .no-mobile-view.mat-toolbar-single-row {
+    .no-mobile-view,
+    .no-mobile-view.mat-toolbar-single-row {
         display: none !important;
     }
 
@@ -107,6 +108,22 @@ button {
 
 .red-val {
     color: red;
+}
+
+.darkgreen-bg {
+    background-color: darkgreen !important;
+}
+
+.darkgreen-bg * {
+    background-color: darkgreen !important;
+}
+
+.orange-bg {
+    background-color: orange !important;
+}
+
+.red-bg {
+    background-color: red !important;
 }
 
 .right-align-val {
@@ -209,6 +226,10 @@ html {
     --mdc-dialog-container-color: white;
     --mdc-dialog-container-shape: 0px;
     --mat-sidenav-container-shape: 0px;
+    --mdc-snackbar-supporting-text-color: white;
+    --mdc-snackbar-container-color: red;
+    --mat-snack-bar-button-color: rgba(231, 237, 238, 0.899);
+    --mdc-snackbar-supporting-text-size: 13px;
 }
 
 .mat-mdc-table {

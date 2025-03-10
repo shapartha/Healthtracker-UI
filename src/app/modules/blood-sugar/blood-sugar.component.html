@@ -14,7 +14,7 @@
                         Add New Blood Sugar Record
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <form class="form-add-record" [formGroup]="addNewForm" (submit)="submitData()">
+                <form class="form-add-record" [formGroup]="addNewForm">
                     <mat-form-field appearance="outline" class="margin-right-10">
                         <mat-label>Fasting: </mat-label>
                         <input type="number" min="0" max="999" matInput placeholder="Fasting" formControlName="fbs">
@@ -22,7 +22,7 @@
                             Value must be greater than 0
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.fbs !== 0">
+                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.fbs !== 0 && addNewForm.value.fbs !== null">
                         <mat-label>Fasting Date&Time: </mat-label>
                         <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_fst">
                         <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
@@ -34,7 +34,7 @@
                         <mat-label>Postprandial (PP):</mat-label>
                         <input type="number" min="0" max="999" matInput placeholder="Postprandial (PP)" formControlName="postprandial">
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.postprandial !== 0">
+                    <mat-form-field appearance="outline" class="margin-right-10" *ngIf="addNewForm.value.postprandial !== 0 && addNewForm.value.postprandial !== null">
                         <mat-label>PP Date&Time: </mat-label>
                         <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date_pp">
                         <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
@@ -43,7 +43,7 @@
                         </mat-error>
                     </mat-form-field>
                     <div>
-                        <button mat-raised-button color="primary" [disabled]="!addNewForm.valid">Save</button>
+                        <button mat-raised-button color="primary" [disabled]="!addNewForm.valid" (click)="submitData()">Save</button>
                         <button mat-raised-button color="accent" (click)="addNewForm.reset()">Reset</button>
                         <button mat-raised-button color="error" (click)="accordion().closeAll()">Close</button>
                     </div>
@@ -68,7 +68,7 @@
                             {{row.fbs}}
                         </ng-container>
                         <ng-container *ngIf="row.fbs === '0'">
-                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)">Add FBS</button>
+                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)" class="add-fbs-pp-btn">Add FBS</button>
                         </ng-container>
                     </td>
                 </ng-container>
@@ -83,7 +83,7 @@
                             {{row.postprandial}}
                         </ng-container>
                         <ng-container *ngIf="row.postprandial === '0'">
-                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)">Add PP</button>
+                            <button mat-raised-button color="warn" (click)="addFbsOrPP(row)" class="add-fbs-pp-btn">Add PP</button>
                         </ng-container>
                     </td>
                 </ng-container>

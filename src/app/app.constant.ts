@@ -11,6 +11,7 @@ export class AppConstants {
     static API_UPDATE_BS_DATA = "updateBsData";
     static API_DELETE_BS_DATA = "deleteBsData";
     static RELEVANT_TIMEZONE = "Asia/Magadan";
+    static CORRECT_TIMEZONE = "Asia/Kolkata";
 
     static BLOOD_PRESSURE_VALUE = {
         GOOD : {

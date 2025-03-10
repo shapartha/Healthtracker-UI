@@ -66,21 +66,25 @@ export class CommonService {
     sessionStorage.clear();
   }
 
-  showAlert(msg: string | object, actionTxt?: string) {
+  showAlert(msg: string | object, type: string = 'error', actionTxt?: string) {
     if (actionTxt == undefined || actionTxt == null) {
       actionTxt = "Close";
     }
     if (typeof msg !== 'string') {
       msg = "An error occurred -> " + JSON.stringify(msg);
     }
-    this.snackbar.open(msg, actionTxt);
-    setTimeout(() => {
-      this.snackbar.dismiss();
-    }, 5000);
+    let containerClass = (type !== 'error') ? 'darkgreen-bg' : '';
+    this.snackbar.open(msg, actionTxt, {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: containerClass,
+      duration: 5000
+    });
   }
 
-  formatDateToString(d: string) {
-    let formattedDate = new Date(d).toLocaleString('en-in', { timeZone: AppConstants.RELEVANT_TIMEZONE });
+  formatDateToString(d: string, tz: string = AppConstants.RELEVANT_TIMEZONE) {
+    let _tz = tz;
+    let formattedDate = new Date(d).toLocaleString('en-in', { timeZone: _tz });
     if (formattedDate == 'Invalid Date') {
       return d;
     }
