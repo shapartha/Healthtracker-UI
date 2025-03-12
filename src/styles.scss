@@ -27,7 +27,7 @@ body {
         display: block !important;
     }
 
-    span:not(.spacer) {
+    span:not(.spacer, .mat-mdc-select-value-text) {
         font-size: smaller;
     }
 

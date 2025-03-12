@@ -72,9 +72,28 @@ export class BloodSugarComponent implements OnInit {
           this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
         }
       });
-
+      this.modifyStylings();
       this.loadData();
     }
+  }
+
+  modifyStylings() {
+    this.styleModifier('.mat-mdc-paginator-container .mat-mdc-paginator-page-size-select', 'width: 60px');
+    this.styleModifier('.mat-mdc-paginator-container .mat-mdc-paginator-touch-target', 'width: 60px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-container .mat-mdc-form-field-infix', 'padding-top: 2px; padding-bottom: 2px; min-height: 0px;');
+    this.styleModifier('.mat-mdc-paginator-range-actions button.mat-mdc-paginator-navigation-first', 'margin: 0 !important; width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-range-actions button.mat-mdc-paginator-navigation-previous', 'margin: 0 !important; width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-range-actions button.mat-mdc-paginator-navigation-next', 'margin: 0 !important; width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-range-actions button.mat-mdc-paginator-navigation-last', 'margin: 0 !important; width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-range-label', 'margin: 0 10px 0 0;');
+    this.styleModifier('.mat-mdc-paginator-container button.mat-mdc-paginator-navigation-first .mat-mdc-button-touch-target', 'width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-container button.mat-mdc-paginator-navigation-previous .mat-mdc-button-touch-target', 'width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-container button.mat-mdc-paginator-navigation-next .mat-mdc-button-touch-target', 'width: 30px; height: 30px;');
+    this.styleModifier('.mat-mdc-paginator-container button.mat-mdc-paginator-navigation-last .mat-mdc-button-touch-target', 'width: 30px; height: 30px;');
+  }
+
+  styleModifier(elementSelector: any, style: string) {
+    document.querySelector(elementSelector)?.setAttribute('style', style);
   }
 
   loadData() {
@@ -88,7 +107,8 @@ export class BloodSugarComponent implements OnInit {
       this.isLoadingResults = false;
       this.resultsLength = this.tableData.data.length;
       this.tableData.paginator = this.paginator;
-      this.tableData.sort = this.sort
+      this.tableData.sort = this.sort;
+      this.modifyStylings();
     });
   }
 

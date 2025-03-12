@@ -62,7 +62,7 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="fbs">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fasting Sugar</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>FBS</th>
                     <td mat-cell *matCellDef="let row">
                         <ng-container *ngIf="row.fbs !== '0'">
                             {{row.fbs}}
@@ -73,11 +73,11 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="record_date_fst">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tested At</th>
                     <td mat-cell *matCellDef="let row">{{row.record_date_fst_d}}</td>
                 </ng-container>
                 <ng-container matColumnDef="postprandial">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PP Sugar</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>PPS</th>
                     <td mat-cell *matCellDef="let row">
                         <ng-container *ngIf="row.postprandial !== '0'">
                             {{row.postprandial}}
@@ -88,7 +88,7 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="record_date_pp">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Test Done At</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tested At</th>
                     <td mat-cell *matCellDef="let row">{{row.record_date_pp_d}}</td>
                 </ng-container>
                 <ng-container matColumnDef="actions">
