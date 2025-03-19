@@ -25,16 +25,16 @@ export class UpdateBloodSugarComponent implements OnInit {
     this.record = this.data.record;
     this.showAll = (this.data.mode == 1) ? false : true;
     this.updateForm = this.formBuilder.group({
-      fbs: [this.record.fbs, [Validators.min(1), Validators.required]],
-      record_date_fst: [new Date(new Date(this.record.record_date_fst).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })), Validators.required],
-      postprandial: [this.record.postprandial, [Validators.min(1), Validators.required]],
-      record_date_pp: [new Date(new Date(this.record.record_date_pp).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })), Validators.required]
+      fbs: [this.record.fbs, [Validators.min(1)]],
+      record_date_fst: [new Date(new Date(this.record.record_date_fst).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE }))],
+      postprandial: [this.record.postprandial, [Validators.min(1)]],
+      record_date_pp: [new Date(new Date(this.record.record_date_pp).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE }))]
     });
     if (this.record.fbs === '0') {
-      this.updateForm.patchValue({ 'record_date_fst': new Date(new Date(this.record.record_date_pp).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })) });
+      this.updateForm.patchValue({ 'fbs': '', 'record_date_fst': new Date(new Date(this.record.record_date_pp).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })) });
     }
     if (this.record.postprandial === '0') {
-      this.updateForm.patchValue({ 'record_date_pp': new Date(new Date(this.record.record_date_fst).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })) });
+      this.updateForm.patchValue({ 'postprandial': '', 'record_date_pp': new Date(new Date(this.record.record_date_fst).toLocaleString('en-us', { timeZone: AppConstants.CORRECT_TIMEZONE })) });
     }
   }
 
@@ -42,8 +42,16 @@ export class UpdateBloodSugarComponent implements OnInit {
     if (!this.showAll) {
       if (this.record.fbs == undefined || this.record.fbs == null || this.record.fbs === '0') {
         this.showOnlyFBS = true;
+        this.updateForm.controls['fbs'].addValidators([Validators.required]);
+        this.updateForm.controls['fbs'].updateValueAndValidity();
+        this.updateForm.controls['record_date_fst'].addValidators([Validators.required]);
+        this.updateForm.controls['record_date_fst'].updateValueAndValidity();
       } else if (this.record.postprandial == undefined || this.record.postprandial == null || this.record.postprandial === '0') {
         this.showOnlyPP = true;
+        this.updateForm.controls['postprandial'].addValidators([Validators.required]);
+        this.updateForm.controls['postprandial'].updateValueAndValidity();
+        this.updateForm.controls['record_date_pp'].addValidators([Validators.required]);
+        this.updateForm.controls['record_date_pp'].updateValueAndValidity();
       }
     }
   }
@@ -52,9 +60,9 @@ export class UpdateBloodSugarComponent implements OnInit {
     this.disableButton = true;
     const formData = this.updateForm.value;
     this.record.fbs = (formData.fbs > 0) ? formData.fbs : this.record.fbs;
-    this.record.postprandial = (formData.postprandial > 0) ? formData.postprandial : this.record.postprandial;debugger;
-    this.record.record_date_fst = (new Date(formData.record_date_fst).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE }) !== 'Invalid Date') ? this.commonService.convertDateForSQL(formData.record_date_fst) : this.record.record_date_fst;
-    this.record.record_date_pp = (new Date(formData.record_date_pp).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE }) !== 'Invalid Date') ? this.commonService.convertDateForSQL(formData.record_date_pp) : this.record.record_date_pp;
+    this.record.postprandial = (formData.postprandial > 0) ? formData.postprandial : this.record.postprandial;
+    this.record.record_date_fst = (formData.fbs > 0 && new Date(formData.record_date_fst).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE }) !== 'Invalid Date') ? this.commonService.convertDateForSQL(formData.record_date_fst) : this.record.record_date_fst;
+    this.record.record_date_pp = (formData.postprandial > 0 && new Date(formData.record_date_pp).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE }) !== 'Invalid Date') ? this.commonService.convertDateForSQL(formData.record_date_pp) : this.record.record_date_pp;
     this.bloodSugarService.updateBsRecord(this.record).subscribe((data: ApiResponseModel<any>) => {
       if (data.success === true) {
         this.commonService.showAlert("Record Updated Successfully", "success");
