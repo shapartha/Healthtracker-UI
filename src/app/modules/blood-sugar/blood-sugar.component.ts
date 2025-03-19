@@ -72,10 +72,17 @@ export class BloodSugarComponent implements OnInit {
           this.addNewForm.controls['record_date_fst'].updateValueAndValidity();
         }
       });
+      this.addNewForm.controls['record_date_fst'].valueChanges.subscribe(value => {
+        if (this.firstChangeFBS < 1 && value !== null) {
+          this.addNewForm.controls['record_date_pp'].setValue(value);
+          this.firstChangeFBS++;
+        }
+      });
       this.modifyStylings();
       this.loadData();
     }
   }
+  firstChangeFBS = -1;
 
   modifyStylings() {
     this.styleModifier('.mat-mdc-paginator-container .mat-mdc-paginator-page-size-select', 'width: 60px');
