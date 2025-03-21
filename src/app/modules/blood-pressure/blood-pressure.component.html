@@ -1,0 +1,120 @@
+@if (isLoadingResults) {
+<div class="loading-shade">
+    @if (isLoadingResults) {
+    <mat-spinner></mat-spinner>
+    }
+</div>
+}
+<div class="container">
+    <div id="addNewForm" class="center-align-val">
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+                <mat-expansion-panel-header>
+                    <mat-panel-description>
+                        Add New Blood Pressure Record
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <form class="form-add-record" [formGroup]="addNewForm">
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Systolic (sys): </mat-label>
+                        <input type="number" min="1" max="999" matInput placeholder="Systolic (SYS)" formControlName="sys">
+                        <mat-error *ngIf="addNewForm.controls.sys.hasError('min')">
+                            Value must be greater than 0
+                        </mat-error>
+                        <mat-error *ngIf="addNewForm.controls.sys.hasError('required')">
+                            Value is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Diastolic (dia):</mat-label>
+                        <input type="number" min="1" max="999" matInput placeholder="Diastolic (DIA)" formControlName="dia">
+                        <mat-error *ngIf="addNewForm.controls.dia.hasError('min')">
+                            Value must be greater than 0
+                        </mat-error>
+                        <mat-error *ngIf="addNewForm.controls.dia.hasError('required')">
+                            Value is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Pulse:</mat-label>
+                        <input type="number" min="1" max="999" matInput placeholder="Pulse" formControlName="pulse">
+                        <mat-error *ngIf="addNewForm.controls.pulse.hasError('min')">
+                            Value must be greater than 0
+                        </mat-error>
+                        <mat-error *ngIf="addNewForm.controls.pulse.hasError('required')">
+                            Value is required
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="margin-right-10">
+                        <mat-label>Date Time: </mat-label>
+                        <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date">
+                        <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+                        <mat-error *ngIf="addNewForm.controls.record_date.hasError('required')">
+                            Valid Date is required
+                        </mat-error>
+                    </mat-form-field>
+                    <div>
+                        <button mat-raised-button color="primary" [disabled]="!addNewForm.valid" (click)="submitData()">Save</button>
+                        <button mat-raised-button color="accent" (click)="addNewForm.reset()">Reset</button>
+                        <button mat-raised-button color="error" (click)="accordion().closeAll()">Close</button>
+                    </div>
+                </form>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div class="table-container mat-elevation-z8">
+        <div class="main-table-container">
+
+            <table mat-table [dataSource]="tableData" class="main-table" matSort matSortActive="record_date" matSortDisableClear matSortDirection="desc">
+                <ng-container matColumnDef="statusIndicator">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-icon class="custom" [ngClass]="getClassVal(row).colorClass">{{getClassVal(row).icon}}</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="systolic">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SYS</th>
+                    <td mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.systolic !== '0'">
+                            {{row.systolic}}
+                        </ng-container>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="diastolic">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>DIA</th>
+                    <td mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.diastolic !== '0'">
+                            {{row.diastolic}}
+                        </ng-container>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="pulse">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Pulse</th>
+                    <td mat-cell *matCellDef="let row">
+                        <ng-container *ngIf="row.pulse !== '0'">
+                            {{row.pulse}}
+                        </ng-container>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="record_date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Time</th>
+                    <td mat-cell *matCellDef="let row">{{row.record_date_d}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-icon class="link" (click)="editData(row, 0)">edit</mat-icon>
+                        <mat-icon class="link" (click)="deleteData(row)">delete</mat-icon>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+
+        <mat-paginator [length]="resultsLength" [pageSize]="20" [pageSizeOptions]="[20, 30, 50]" [showFirstLastButtons]="true"
+            aria-label="Select page of GitHub search results"></mat-paginator>
+    </div>
+
+</div>

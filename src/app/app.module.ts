@@ -44,10 +44,11 @@ import { UpdateBloodSugarComponent } from './modules/blood-sugar/update-blood-su
 import { ConfirmDialogComponent } from './modules/confirm-dialog/confirm-dialog.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LogoutComponent } from './modules/logout/logout.component';
+import { BloodPressureComponent } from './modules/blood-pressure/blood-pressure.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent, UpdateBloodSugarComponent, ConfirmDialogComponent, LogoutComponent
+    AppComponent, LoginComponent, HomeComponent, BloodSugarComponent, UpdateBloodSugarComponent, ConfirmDialogComponent, LogoutComponent, BloodPressureComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, ReactiveFormsModule, OwlDateTimeModule, OwlNativeDateTimeModule, MatFormFieldModule, MatAutocompleteModule, MatCardModule, MatCheckboxModule, MatButtonModule, MatButtonToggleModule, MatChipsModule, MatCommonModule, MatDatepickerModule, MatDialogModule,
