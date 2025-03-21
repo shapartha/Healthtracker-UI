@@ -11,6 +11,7 @@ import { ApiResponseModel } from 'src/app/models/common.model';
 import { BloodPressureService } from 'src/app/services/blood-pressure/blood-pressure.service';
 import { CommonService } from 'src/app/services/common/common.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { UpdateBloodPressureComponent } from './update-blood-pressure/update-blood-pressure.component';
 
 @Component({
   selector: 'app-blood-pressure',
@@ -180,18 +181,18 @@ export class BloodPressureComponent implements OnInit {
     });
   }
 
-  editData(row: BloodPressureListResponseModel, editMode: number = 1) {
-    // const dialogRef = this.dialog.open(UpdateBloodSugarComponent, {
-    //   data: { record: row, mode: editMode },
-    //   width: '50vw',
-    //   disableClose: true,
-    //   closeOnNavigation: true
-    // });
-    // dialogRef.afterClosed().subscribe(d => {
-    //   if (!!d && d.simplyClose) {
-    //     return;
-    //   }
-    //   this.loadData();
-    // });
+  editData(row: BloodPressureListResponseModel) {
+    const dialogRef = this.dialog.open(UpdateBloodPressureComponent, {
+      data: { record: row },
+      width: '50vw',
+      disableClose: true,
+      closeOnNavigation: true
+    });
+    dialogRef.afterClosed().subscribe(d => {
+      if (!!d && d.simplyClose) {
+        return;
+      }
+      this.loadData();
+    });
   }
 }

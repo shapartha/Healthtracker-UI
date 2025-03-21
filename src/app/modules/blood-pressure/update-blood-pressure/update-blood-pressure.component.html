@@ -1,0 +1,46 @@
+<div id="updateForm" class="center-align-val">
+    <form class="form-update-record" [formGroup]="updateForm">
+        <mat-form-field appearance="outline" class="margin-right-10">
+            <mat-label>Systolic (sys): </mat-label>
+            <input type="number" min="1" max="999" matInput placeholder="Systolic (SYS)" formControlName="sys">
+            <mat-error *ngIf="updateForm.controls.sys.hasError('min')">
+                Value must be greater than 0
+            </mat-error>
+            <mat-error *ngIf="updateForm.controls.sys.hasError('required')">
+                Value is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10">
+            <mat-label>Diastolic (dia):</mat-label>
+            <input type="number" min="1" max="999" matInput placeholder="Diastolic (DIA)" formControlName="dia">
+            <mat-error *ngIf="updateForm.controls.dia.hasError('min')">
+                Value must be greater than 0
+            </mat-error>
+            <mat-error *ngIf="updateForm.controls.dia.hasError('required')">
+                Value is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10">
+            <mat-label>Pulse:</mat-label>
+            <input type="number" min="1" max="999" matInput placeholder="Pulse" formControlName="pulse">
+            <mat-error *ngIf="updateForm.controls.pulse.hasError('min')">
+                Value must be greater than 0
+            </mat-error>
+            <mat-error *ngIf="updateForm.controls.pulse.hasError('required')">
+                Value is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="margin-right-10">
+            <mat-label>Date Time: </mat-label>
+            <input matInput [owlDateTime]="dt" [owlDateTimeTrigger]="dt" formControlName="record_date">
+            <owl-date-time #dt [pickerMode]="'dialog'"></owl-date-time>
+            <mat-error *ngIf="updateForm.controls.record_date.hasError('required')">
+                Valid Date is required
+            </mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="primary" [disabled]="!updateForm.valid || disableButton" (click)="submitData()">Save</button>
+            <button mat-raised-button color="error" (click)="close()">Close</button>
+        </div>
+    </form>
+</div>
