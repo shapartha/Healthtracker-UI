@@ -1,12 +1,14 @@
 {
   "name": "healthtracker-ui",
-  "version": "1.1.2",
+  "version": "1.1.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4201",
     "build": "ng build",
+    "prebuild": "node update-app-info.mjs",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "npm version patch --no-git-tag-version && node update-app-info.mjs && ng build --base-href='https://shapartha.github.io/Healthtracker-UI/' && npx angular-cli-ghpages --dir=dist/Healthtracker-UI"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +24,8 @@
     "@angular/router": "~18.0.0",
     "@danielmoncada/angular-datetime-picker": "^18.1.0",
     "@ng-idle/core": "^15.0.0",
+    "moment-timezone": "^0.5.47",
+    "replace-in-file": "^8.3.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.3",
     "uuid": "^10.0.0",

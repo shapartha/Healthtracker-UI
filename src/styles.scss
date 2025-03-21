@@ -22,6 +22,10 @@ body {
     display: block !important;
 }
 
+.container {
+    padding-bottom: 30px;
+}
+
 @media (max-width: 600px) {
     .mobile-view {
         display: block !important;
