@@ -10,6 +10,7 @@ import { BloodPressureListRequestModel, BloodPressureListResponseModel } from 's
 import { ApiResponseModel } from 'src/app/models/common.model';
 import { BloodPressureService } from 'src/app/services/blood-pressure/blood-pressure.service';
 import { CommonService } from 'src/app/services/common/common.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-blood-pressure',
@@ -121,59 +122,62 @@ export class BloodPressureComponent implements OnInit {
   }
 
   submitData() {
-    // const formData = this.addNewForm.getRawValue();
-    // if ((formData.fbs === undefined || formData.fbs === null || formData.fbs === 0) &&
-    //   (formData.postprandial === undefined || formData.postprandial === null || formData.postprandial === 0)) {
-    //   this.commonService.showAlert("Please enter a valid NON-ZERO value");
-    //   return;
-    // }
-    // let inpData = {
-    //   fbs: (formData.fbs === undefined || formData.fbs === null) ? 0 : formData.fbs,
-    //   postprandial: (formData.postprandial === undefined || formData.postprandial === null) ? 0 : formData.postprandial,
-    //   record_date_fst: (formData.fbs === undefined || formData.fbs === null) ? this.commonService.convertDateForSQL(new Date().toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })) : this.commonService.convertDateForSQL(new Date(formData.record_date_fst).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })),
-    //   record_date_pp: (formData.postprandial === undefined || formData.postprandial === null) ? this.commonService.convertDateForSQL(new Date().toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })) : this.commonService.convertDateForSQL(new Date(formData.record_date_pp).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })),
-    //   check_sum: this.commonService.generateUUID(),
-    //   user_id: this.commonService.getAppUserId
-    // }
-    // this.isLoadingResults = true;
-    // this.bloodSugarService.saveBsRecord(inpData).subscribe((data: ApiResponseModel<any>) => {
-    //   if (data.success === true) {
-    //     this.accordion().closeAll();
-    //     this.commonService.showAlert("Record Added Successfully", "success");
-    //     this.addNewForm.reset({
-    //       fbs: 0,
-    //       postprandial: 0
-    //     });
-    //     this.loadData();
-    //   }
-    //   this.isLoadingResults = false;
-    // });
+    const formData = this.addNewForm.getRawValue();
+    if ((formData.sys === undefined || formData.sys === null || formData.sys === 0) &&
+      (formData.dia === undefined || formData.dia === null || formData.dia === 0) &&
+      (formData.pulse === undefined || formData.pulse === null || formData.pulse === 0)) {
+      this.commonService.showAlert("Please enter a valid NON-ZERO value");
+      return;
+    }
+    let inpData = {
+      systolic: (formData.sys === undefined || formData.sys === null) ? 0 : formData.sys,
+      diastolic: (formData.dia === undefined || formData.dia === null) ? 0 : formData.dia,
+      pulse: (formData.pulse === undefined || formData.pulse === null) ? 0 : formData.pulse,
+      record_date: (formData.record_date === undefined || formData.record_date === null) ? this.commonService.convertDateForSQL(new Date().toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })) : this.commonService.convertDateForSQL(new Date(formData.record_date).toLocaleString('en-US', { timeZone: AppConstants.CORRECT_TIMEZONE })),
+      check_sum: this.commonService.generateUUID(),
+      user_id: this.commonService.getAppUserId
+    }
+    this.isLoadingResults = true;
+    this.bloodPressureService.saveBpRecord(inpData).subscribe((data: ApiResponseModel<any>) => {
+      if (data.success === true) {
+        this.accordion().closeAll();
+        this.commonService.showAlert("Record Added Successfully", "success");
+        this.addNewForm.reset({
+          sys: 0,
+          dia: 0,
+          pulse: 0,
+          record_date: new Date()
+        });
+        this.loadData();
+      }
+      this.isLoadingResults = false;
+    });
   }
 
   deleteData(row: BloodPressureListResponseModel) {
-    // const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
-    //   data: {
-    //     title: 'Confirm Delete Action',
-    //     message: 'Record would get deleted permanently. Are you sure you want to delete this record ?',
-    //     confirmBtnLabel: 'Yes',
-    //     closeBtnLabel: 'No'
-    //   },
-    //   disableClose: true
-    // });
-    // confirmDialog.afterClosed().subscribe(data => {
-    //   if (data) {
-    //     this.isLoadingResults = true;
-    //     this.bloodSugarService.deleteBsRecord(row).subscribe((data: ApiResponseModel<any>) => {
-    //       if (data.success === true) {
-    //         this.commonService.showAlert("Record Deleted Successfully", "success");
-    //         this.loadData();
-    //       } else {
-    //         this.commonService.showAlert(data.responseDescription);
-    //       }
-    //       this.isLoadingResults = false;
-    //     });
-    //   }
-    // });
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirm Delete Action',
+        message: 'Record would get deleted permanently. Are you sure you want to delete this record ?',
+        confirmBtnLabel: 'Yes',
+        closeBtnLabel: 'No'
+      },
+      disableClose: true
+    });
+    confirmDialog.afterClosed().subscribe(data => {
+      if (data) {
+        this.isLoadingResults = true;
+        this.bloodPressureService.deleteBpRecord(row).subscribe((data: ApiResponseModel<any>) => {
+          if (data.success === true) {
+            this.commonService.showAlert("Record Deleted Successfully", "success");
+            this.loadData();
+          } else {
+            this.commonService.showAlert(data.responseDescription);
+          }
+          this.isLoadingResults = false;
+        });
+      }
+    });
   }
 
   editData(row: BloodPressureListResponseModel, editMode: number = 1) {
