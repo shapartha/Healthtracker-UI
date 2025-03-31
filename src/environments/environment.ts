@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiServerUrl: "http://shapartha.online/healthtracker/api/"
+  apiServerUrl: "http://shapartha.site/healthtracker/api/"
 };
 
 /*
