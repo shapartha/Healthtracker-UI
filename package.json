@@ -1,14 +1,16 @@
 {
   "name": "healthtracker-ui",
-  "version": "1.2.1",
+  "version": "1.2.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4201",
-    "build": "ng build",
-    "prebuild": "node update-app-info.mjs",
+    "build": "ng build --base-href='https://shapartha.github.io/Healthtracker-UI/'",
+    "prebuild": "npm version patch --no-git-tag-version && node update-app-info.mjs",
+    "major": "npm version major --no-git-tag-version && node update-app-info.mjs",
+    "minor": "npm version minor --no-git-tag-version && node update-app-info.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm version patch --no-git-tag-version && node update-app-info.mjs && ng build --base-href='https://shapartha.github.io/Healthtracker-UI/' && npx angular-cli-ghpages --dir=dist/Healthtracker-UI"
+    "deploy": "npx angular-cli-ghpages --dir=dist/Healthtracker-UI --no-silent"
   },
   "private": true,
   "dependencies": {

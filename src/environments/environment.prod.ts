@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiServerUrl: "http://shapartha.site/healthtracker/api/"
+  apiServerUrl: "https://shapartha.online/healthtracker/api/"
 };
